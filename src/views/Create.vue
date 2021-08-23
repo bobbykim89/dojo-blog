@@ -16,7 +16,7 @@
 <script>
 import { ref } from '@vue/reactivity';
 import { useRouter } from 'vue-router';
-import { projectFirestore } from '../firebase/config';
+import { projectFirestore, timestamp } from '../firebase/config';
 export default {
   setup() {
     const title = ref('');
@@ -25,7 +25,6 @@ export default {
     const tags = ref([]);
 
     const router = useRouter();
-    console.log(router);
 
     const handleKeydown = () => {
       if (!tags.value.includes(tag.value)) {
@@ -40,6 +39,7 @@ export default {
         title: title.value,
         body: body.value,
         tags: tags.value,
+        createdAt: timestamp(),
       };
       const res = await projectFirestore.collection('posts').add(newPost);
       router.push({ name: 'Home' });
